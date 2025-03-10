@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: namespaceclass-controller
+  namespace: default
+  labels:
+    app: namespaceclass-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: namespaceclass-controller
+  template:
+    metadata:
+      labels:
+        app: namespaceclass-controller
+    spec:
+      serviceAccountName: namespaceclass-controller
+      containers:
+      - name: manager
+        image: namespaceclass-controller:latest
+        imagePullPolicy: Never  # For local development
+        args:
+        - --metrics-bind-address=:8080
+        - --health-probe-bind-address=:8081
